@@ -18,6 +18,8 @@ import random
 import torch
 import torchvision
 import numpy as np
+from torchcam.methods import SmoothGradCAMpp
+
 
 from PIL import Image
 from matplotlib import pyplot as plt
@@ -266,3 +268,8 @@ print('Probabilities:', probabilities)
 print('Predicted class index:', predicted_class_index)
 print('Predicted class name:', predicted_class_name)
 
+
+cam_extractor = SmoothGradCAMpp(resnet18)
+activation_map = cam_extractor(predicted_class_index, outputs)
+plt.imshow(activation_map[0])
+plt.show()
