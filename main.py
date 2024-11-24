@@ -273,3 +273,18 @@ cam_extractor = SmoothGradCAMpp(resnet18)
 activation_map = cam_extractor(predicted_class_index, outputs)
 plt.imshow(activation_map[0])
 plt.show()
+
+y_true = []
+y_pred = []
+
+for val_step, (images, labels) in enumerate(dl_test):
+    outputs = resnet18(images)
+    _, preds = torch.max(outputs, 1)
+    y_true.extend(labels.numpy())
+    y_pred.extend(preds.numpy())
+
+precision = precision_score(y_true, y_pred, average='macro')
+recall = recall_score(y_true, y_pred, average='macro')
+f1 = f1_score(y_true, y_pred, average='macro')
+
+print(f'Precision: {precision:.4f}, Recall: {recall:.4f}, F1 Score: {f1:.4f}')
